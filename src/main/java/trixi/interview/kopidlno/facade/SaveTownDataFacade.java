@@ -18,7 +18,8 @@ import trixi.interview.kopidlno.persistent.JPATownRepository;
 import java.util.List;
 
 @Service
-@Transactional
+// Not used because SQLite may encounter database locking during the import.
+//@Transactional
 @RequiredArgsConstructor
 public class SaveTownDataFacade {
     @Value("${app.town.data.url}")
