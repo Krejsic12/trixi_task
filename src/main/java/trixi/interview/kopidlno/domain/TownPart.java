@@ -1,7 +1,6 @@
 package trixi.interview.kopidlno.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,15 +14,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TownPart {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id_town_part")
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_town_part", nullable = false)
     private Long id;
-    @Column(name = "code", unique = true)
-    @NotNull
+    @Column(name = "code", unique = true, nullable = false)
     private Long code;
-    @Column(name = "name")
-    @NotNull
+    @Column(name = "name", nullable = false)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Town.class)

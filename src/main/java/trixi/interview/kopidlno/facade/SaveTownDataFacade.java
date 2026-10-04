@@ -39,6 +39,7 @@ public class SaveTownDataFacade {
             Town existingTown = townRepo.findByCode(town.getCode());
             if (existingTown != null) {
                 town.setId(existingTown.getId());
+                town.setTownParts(existingTown.getTownParts());
             }
             townRepo.save(town);
         });
