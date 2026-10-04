@@ -12,12 +12,12 @@ import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class URLXMLImporter extends FileXMLImporter {
+public class UrlXMLImporter extends FileXMLImporter {
     private final String url;
     private final RestTemplate restTemplate;
     private Path extractionDirectory;
 
-    public URLXMLImporter(String url, RestTemplate restTemplate) {
+    public UrlXMLImporter(String url, RestTemplate restTemplate) {
         super("");
         this.url = url;
         this.restTemplate = restTemplate;
