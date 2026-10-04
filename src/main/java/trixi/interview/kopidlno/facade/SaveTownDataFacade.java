@@ -1,8 +1,9 @@
 package trixi.interview.kopidlno.facade;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.w3c.dom.Document;
 import trixi.interview.kopidlno.domain.Town;
@@ -16,7 +17,8 @@ import trixi.interview.kopidlno.persistent.JPATownRepository;
 
 import java.util.List;
 
-@Component
+@Service
+@Transactional
 @RequiredArgsConstructor
 public class SaveTownDataFacade {
     @Value("${app.town.data.url}")
