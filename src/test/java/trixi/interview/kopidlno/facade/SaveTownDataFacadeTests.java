@@ -8,23 +8,21 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 import trixi.interview.kopidlno.domain.Town;
 import trixi.interview.kopidlno.domain.TownPart;
+import trixi.interview.kopidlno.helpers.ZipWithXmlHelpers;
 import trixi.interview.kopidlno.parser.TownPartXMLParser;
 import trixi.interview.kopidlno.parser.TownXMLParser;
 import trixi.interview.kopidlno.persistent.JPATownPartRepository;
 import trixi.interview.kopidlno.persistent.JPATownRepository;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class SaveTownDataFacadeTests {
+class SaveTownDataFacadeTests extends ZipWithXmlHelpers {
     private static final String URL = "https://example.com/town-data.zip";
 
     @Mock
@@ -89,12 +87,6 @@ class SaveTownDataFacadeTests {
     }
 
     private byte[] zipWithXml(String content) throws IOException {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        try (ZipOutputStream zip = new ZipOutputStream(output)) {
-            zip.putNextEntry(new ZipEntry("towns.xml"));
-            zip.write(content.getBytes());
-            zip.closeEntry();
-        }
-        return output.toByteArray();
+        return zipWithXml("towns.xml", content);
     }
 }

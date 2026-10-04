@@ -6,7 +6,7 @@ import org.xml.sax.InputSource;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 
-public class XMLParserHelpers {
+public abstract class XMLParserHelpers {
     protected Document parseXml(String xml) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         InputSource inputSource = new InputSource(new StringReader(xml));

@@ -6,11 +6,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.client.RestTemplate;
 import org.w3c.dom.Document;
+import trixi.interview.kopidlno.helpers.ZipWithXmlHelpers;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -19,7 +17,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class UrlXMLImporterTests {
+class UrlXMLImporterTests extends ZipWithXmlHelpers {
     private static final String URL = "https://example.com/data.zip";
 
     @Mock
@@ -28,7 +26,7 @@ class UrlXMLImporterTests {
     @Test
     void getParsedXML_downloadsAndParsesXMLFromZip() throws IOException {
         when(restTemplate.getForObject(URL, byte[].class))
-                .thenReturn(zipWithEntry("data.xml", "<root><value>ok</value></root>"));
+                .thenReturn(zipWithXml("data.xml", "<root><value>ok</value></root>"));
         UrlXMLImporter importer = new UrlXMLImporter(URL, restTemplate);
 
         Document document = importer.getParsedXML();
@@ -61,21 +59,11 @@ class UrlXMLImporterTests {
     @Test
     void getParsedXML_rejectsZipWithoutXMLFile() throws IOException {
         when(restTemplate.getForObject(URL, byte[].class))
-                .thenReturn(zipWithEntry("data.txt", "not XML"));
+                .thenReturn(zipWithXml("data.txt", "not XML"));
         UrlXMLImporter importer = new UrlXMLImporter(URL, restTemplate);
 
         assertThatThrownBy(importer::getParsedXML)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("Expected exactly one XML file in ZIP archive, found 0");
-    }
-
-    private byte[] zipWithEntry(String name, String content) throws IOException {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        try (ZipOutputStream zip = new ZipOutputStream(output)) {
-            zip.putNextEntry(new ZipEntry(name));
-            zip.write(content.getBytes());
-            zip.closeEntry();
-        }
-        return output.toByteArray();
     }
 }
